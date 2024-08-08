@@ -14,7 +14,7 @@ const assistant_id = "asst_ngIBjA2gBVqoGvrwF3fcagPJ";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", async (req, res) => {
+app.post("/", async (req, res) => {
   try {
     const { query } = req.body;
     if (!query) {
