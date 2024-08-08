@@ -20,6 +20,9 @@ app.post("/", async (req, res) => {
     if (!query) {
       throw new Error("Missing query parameter.");
     }
+    if (query.length > 255) {
+      throw new Error("Query is too long.");
+    }
 
     const thread = await openai.beta.threads.create();
 
