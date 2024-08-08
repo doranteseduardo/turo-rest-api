@@ -4,7 +4,7 @@ import OpenAI from "openai";
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = 3003;
 const openai = new OpenAI({
   apiKey:
     "sk-Ww8A0t_1Pczyco7UnsDcZLnHe2SiDTGkiy_0YKgvJyT3BlbkFJfGgA_-U-Dn30Top9kj_mjVagL9xTyptaYHQygRU6MA",
