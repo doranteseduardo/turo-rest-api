@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.post("/", async (req, res) => {
   try {
-    const { query } = req.body;
+    let { query, threadId } = req.body;
     if (!query) {
       throw new Error("Missing query parameter.");
     }
@@ -24,14 +24,18 @@ app.post("/", async (req, res) => {
       throw new Error("Query is too long.");
     }
 
-    const thread = await openai.beta.threads.create();
+    let thread;
+    if (!threadId) {
+      thread = await openai.beta.threads.create();
+      threadId = thread.id;
+    }
 
-    const message = await openai.beta.threads.messages.create(thread.id, {
+    const message = await openai.beta.threads.messages.create(threadId, {
       role: "user",
       content: query,
     });
 
-    let run = await openai.beta.threads.runs.createAndPoll(thread.id, {
+    let run = await openai.beta.threads.runs.createAndPoll(threadId, {
       assistant_id: assistant_id,
     });
 
@@ -40,7 +44,11 @@ app.post("/", async (req, res) => {
       const messages = await openai.beta.threads.messages.list(run.thread_id);
       for (const message of messages.data.reverse()) {
         if (message.role == "assistant") {
-          response = { role: "Turo", content: message.content[0].text.value };
+          response = {
+            role: "Turo",
+            content: message.content[0].text.value,
+            threadId,
+          };
         }
       }
     }
