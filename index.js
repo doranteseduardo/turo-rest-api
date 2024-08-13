@@ -20,11 +20,11 @@ app.post("/", async (req, res) => {
     if (!query) {
       throw new Error("Missing query parameter.");
     }
+    const trimmedQuery = query.trim();
     if (
-      query.trim().length > 255 ||
-      !query.trim().includes(" ") ||
-      query.trim().length < 5 ||
-      !/^[a-zA-Z\s]+$/.test(query.trim())
+      trimmedQuery.length > 255 ||
+      trimmedQuery.length < 5 ||
+      !/^(?=.*[a-zA-Z])(?=.*\s).+$/.test(trimmedQuery)
     ) {
       throw new Error(
         "Your request doesn't seem to be valid. Please try again..."
@@ -39,7 +39,7 @@ app.post("/", async (req, res) => {
 
     const message = await openai.beta.threads.messages.create(threadId, {
       role: "user",
-      content: query,
+      content: trimmedQuery,
     });
 
     let run = await openai.beta.threads.runs.createAndPoll(threadId, {
