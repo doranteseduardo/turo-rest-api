@@ -20,8 +20,15 @@ app.post("/", async (req, res) => {
     if (!query) {
       throw new Error("Missing query parameter.");
     }
-    if (query.length > 255) {
-      throw new Error("Query is too long.");
+    if (
+      query.trim().length > 255 ||
+      !query.trim().includes(" ") ||
+      query.trim().length < 5 ||
+      !/^[a-zA-Z\s]+$/.test(query.trim())
+    ) {
+      throw new Error(
+        "Your request doesn't seem to be valid. Please try again..."
+      );
     }
 
     let thread;
