@@ -6,8 +6,7 @@ dotenv.config();
 const app = express();
 const port = 3000;
 const openai = new OpenAI({
-  apiKey:
-    "sk-Ww8A0t_1Pczyco7UnsDcZLnHe2SiDTGkiy_0YKgvJyT3BlbkFJfGgA_-U-Dn30Top9kj_mjVagL9xTyptaYHQygRU6MA",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 const assistant_id = "asst_ngIBjA2gBVqoGvrwF3fcagPJ";
 
